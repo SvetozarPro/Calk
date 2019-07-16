@@ -5,10 +5,13 @@ class NotationError(ArithmeticError):
 revers_nums = {0:'0',1:'1',2:'2',3:'3',4:'4',5:'5',6:'6',7:'7',8:'8',9:'9',10:'A',11:'B',12:'C',13:'D',14:'E',15:'F'}
 nums = {'0':0,'1':1,'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'A':10,'B':11,'C':12,'D':13,'E':14,'F':15}
 notations = {'0B':2,'0O':8,'0X':16}
+revers_notations = {'2':'0b','8':'0o','10':'','16':'0x'}
 
 
-# Приведение числа к стандартной форме (без нулей в старших разрядах)
 def normalize(body):
+    """
+    Приведение числа к стандартной форме (без нулей в старших разрядах)
+    """
     for i in range(len(body) - 1, 0, -1):
         if body[i] == '0':
             body.pop(i)
@@ -16,8 +19,10 @@ def normalize(body):
             break
 
 
-# Перевод формы представления тела числа из словаря в строку
 def dict_to_str(body):
+    """
+    Перевод формы представления тела числа из словаря в строку
+    """
     rez = ''
     for i in range(len(body)):
         rez += revers_nums[body[i]]
@@ -25,12 +30,15 @@ def dict_to_str(body):
 
 
 class Num:
-    # У объектов класса есть следующие параметры:
-    # self.positive - положительность числа
-    # self.code - текстовое обозначение системы счисления из словаря notations, в случае десятичной СС равен ''
-    # self.notation - числовое обозначение системы счисления
-    # self.body - словарь, представляющий число с ключами - разрядами, и их значениями - текстовая запись цифры разряда
-    # self.length - длина циферной части числа
+    """
+    У объектов класса есть следующие параметры:
+    self.positive - положительность числа
+    self.code - текстовое обозначение системы счисления из словаря notations, в случае десятичной СС равен ''
+    self.notation - числовое обозначение системы счисления
+    self.body - словарь, представляющий число с ключами - разрядами, и их значениями - текстовая запись цифры разряда
+    self.length - длина циферной части числа
+    self.value - строковое представление числа без системы счисления
+    """
     def __init__(self, value):
         value = value.upper()
 
@@ -76,7 +84,7 @@ class Num:
             else:
                 rez_add = {}
                 # Поразрядное сложение с вынесением переполнения разряда как +1 к более старшему разряду в результате
-                for i in range(max(self.length,other.length)):
+                for i in range(max(self.length, other.length)):
                     rez_add[i] = rez_add.get(i, 0) + nums[self.body.get(i, '0')] + nums[other.body.get(i, '0')]
                     rez_add[i+1] = rez_add[i] // self.notation
                     rez_add[i] %= self.notation
@@ -166,10 +174,10 @@ class Num:
                 normalize(dividend)
 
             # Проверка на остаток при отрицательном итоге
-            if self.positive ^ other.positive and ((subtrahend.length == 1 and subtrahend.body[0] != '0') or subtrahend.length > 1):
+            if self.positive ^ other.positive and ((subtrahend.length == 1 and subtrahend.body[0] != '0')
+                                                   or subtrahend.length > 1):
                 rez = rez + Num(self.code + '1')
             return Num((self.positive ^ other.positive) * '-' + str(rez))
-
 
         else:
             raise NotationError()
@@ -195,7 +203,8 @@ class Num:
                 normalize(dividend)
 
             # Проверка на остаток при отрицательном делителе
-            if (not other.positive) and ((subtrahend.length == 1 and subtrahend.body[0] != '0') or subtrahend.length > 1):
+            if (not other.positive) and ((subtrahend.length == 1 and subtrahend.body[0] != '0')
+                                         or subtrahend.length > 1):
                 rez = module_other - subtrahend
             else:
                 rez = subtrahend
@@ -203,3 +212,28 @@ class Num:
 
         else:
             raise NotationError()
+
+
+def to_calc(value1, value2, notation, operation):
+    """
+    Функция изменения интерфейса калькулятора
+    :param value1: первое число
+    :param value2: второе число
+    :param notation: система счисления в виде числа в строковом формате:'2', '8', '10', '16'
+    :param operation: арифметический оператор в строковом формате: '+', '-', '*', '//', '%'
+    :return: кортеж результата числа и его системы счисления в строковом формате
+    """
+    num1, num2 = Num(revers_notations[notation] + value1), Num(revers_notations[notation] + value2)
+    if operation == '+':
+        result = num1 + num2
+    elif operation == '-':
+        result = num1 - num2
+    elif operation == '*':
+        result = num1 * num2
+    elif operation == '//':
+        result = num1 // num2
+    elif operation == '%':
+        result = num1 % num2
+    else:
+        raise TypeError
+    return result.value, str(result.notation)
