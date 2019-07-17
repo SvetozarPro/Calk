@@ -21,7 +21,7 @@ def normalize(body):
 
 def dict_to_str(body):
     """
-    Перевод формы представления тела числа из словаря в строку
+    Перевод формы представления тела числа из словаря в строку, где значения имеют тип int
     """
     rez = ''
     for i in range(len(body)):
@@ -236,4 +236,4 @@ def to_calc(value1, value2, notation, operation):
         result = num1 % num2
     else:
         raise TypeError
-    return result.value, str(result.notation)
+    return str(result).replace(result.code.lower(), ''), str(result.notation)
