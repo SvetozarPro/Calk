@@ -37,7 +37,7 @@ class Calculator:
         self.shift = 0
 
         r = ''.join(r)[::-1]
-        
+
         if all([i=='0' for i in r]):
             return '0'
         elif r.startswith('0'):
@@ -148,3 +148,6 @@ def do_calc(num1, num2, system, operation):
     else:
         raise TypeError
     return result, str(system)
+
+# a = do_calc('10010001100111001110','100100011001', '2', '-')
+# print(a)
