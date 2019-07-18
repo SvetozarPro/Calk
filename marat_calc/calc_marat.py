@@ -9,13 +9,15 @@ class Calculator:
 
     """Конструктор принимает 3 аргумента, числа a и b и систему счисления(2, 8, 10, 16)"""
 
-    def __init__(self, num, num2, system):
+    def __init__(self, *args):
         self.result = []
-        self.shift = 0  # сдвиг
-        self.system = system  # CC
+        # self.shift = 0  # сдвиг
+        # self.system = args[2] # CC
 
 
-    def __add__(self, l1, l2):
+    def __add__(self, l1, l2, system):
+        self.system = int(system)
+        self.shift = 0
         self.result = []
         max_len = max(len(l1), len(l2))
         l1, l2 = l1.rjust(max_len, '0'), l2.rjust(max_len, '0')
@@ -36,11 +38,16 @@ class Calculator:
 
         self.shift = 0
 
-        return ''.join(r)[::-1]
+        return ''.join(r)[::-1], str(self.system)
 
 
-    def __sub__(self, l1, l2):
+    def __sub__(self, l1, l2, system):
+        self.system = int(system)
+        self.shift = 0
+        self.result = []
         char = ''
+        if l1 == '0' and l2 != '0':
+            return '-' + l2, str(self.system)
         if len(l1) < len(l2):
             l1, l2 = l2, l1
             char = '-'
@@ -67,12 +74,19 @@ class Calculator:
         self.result = []
 
         r = ''.join(r)[::-1]
+        if all([i=='0' for i in r]):
+            return '0', str(self.system)
+        elif r.startswith('0'):
+            return r.lstrip('0'), str(self.system)
+        else:
+            return r, str(self.system)
 
-        return r.lstrip('0')
 
 
-
-    def __mul__(self, l1, l2):
+    def __mul__(self, l1, l2, system):
+        self.system = int(system)
+        self.shift = 0
+        self.result = []
         self.zero = -1
         temp = []
         mul = ''
@@ -98,7 +112,7 @@ class Calculator:
             mul = self.__add__(temp2, mul)
             temp = []
 
-        return mul
+        return mul, str(self.system)
 
 
 
