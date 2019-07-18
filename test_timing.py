@@ -3,12 +3,13 @@ from itertools import starmap, combinations_with_replacement as comb
 from Calk_Svetozar.Svetozar_05_dict import *
 
 
-def calc_time(value1, value2, notation, operation):
-    time = process_time()
-    for i in range(100):
-        to_calc(value1, value2, notation, operation)
-    time = (process_time() - time) / 100
-    return time
+def maker(function):
+    def calc_time(value1, value2, notation, operation):
+        time = process_time()
+        function(value1, value2, notation, operation)
+        time = (process_time() - time)
+        return time
+    return calc_time
 
 
 length_list = [1, 5, 10, 20, 50]  # список количества разрядов чисел для тестов
@@ -20,12 +21,12 @@ test_suit = [
      for i, j in comb([num*k for k in length_list], 2)]
     for operation in operations
 ]
-print(test_suit)
 
 
 test_functions = [to_calc]
 for func in test_functions:
-    operations_times = [list(starmap(calc_time, num_sys)) for num_sys in test_suit]
+    timer = maker(func)
+    operations_times = [list(starmap(timer, num_sys)) for num_sys in test_suit]
     print("Тестируемая функция: {0}".format(str(func)))
     for i in range(len(operations)):
         print("\tТестируемая операция: {0}".format(operations[i]))
