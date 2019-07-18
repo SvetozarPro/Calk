@@ -20,5 +20,17 @@ test_suit = [
      for i, j in comb([num*k for k in length_list], 2)]
     for operation in operations
 ]
+print(test_suit)
 
-# addition_time = [list(starmap(calc_time, num_sys)) for num_sys in test_suit_add]
+
+test_functions = [to_calc]
+for func in test_functions:
+    operations_times = [list(starmap(calc_time, num_sys)) for num_sys in test_suit]
+    print("Тестируемая функция: {0}".format(str(func)))
+    for i in range(len(operations)):
+        print("\tТестируемая операция: {0}".format(operations[i]))
+        for j in range(len(num_sys_list)):
+            print("\t\t{0[0]}: {1}".format(num_sys_list[j],
+                                           operations_times[i][j*len(operations_times)//len(operations):
+                                                               (j+1)*len(operations_times)//len(operations)]))
+    print("Суммарнове время прохождения теста: {0}".format(sum(operations_times)))
