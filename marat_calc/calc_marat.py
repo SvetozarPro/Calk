@@ -9,15 +9,13 @@ class Calculator:
 
     """Конструктор принимает 3 аргумента, числа a и b и систему счисления(2, 8, 10, 16)"""
 
-    def __init__(self, *args):
+    def __init__(self, num1, num2, system):
         self.result = []
-        # self.shift = 0  # сдвиг
-        # self.system = args[2] # CC
+        self.shift = 0  # сдвиг
+        self.system = int(system)  # CC
 
 
-    def __add__(self, l1, l2, system):
-        self.system = int(system)
-        self.shift = 0
+    def __add__(self, l1, l2):
         self.result = []
         max_len = max(len(l1), len(l2))
         l1, l2 = l1.rjust(max_len, '0'), l2.rjust(max_len, '0')
@@ -38,16 +36,22 @@ class Calculator:
 
         self.shift = 0
 
-        return ''.join(r)[::-1], str(self.system)
+        r = ''.join(r)[::-1]
+        
+        if all([i=='0' for i in r]):
+            return '0'
+        elif r.startswith('0'):
+            return r.lstrip('0')
+        else:
+            return r
 
 
-    def __sub__(self, l1, l2, system):
-        self.system = int(system)
-        self.shift = 0
+
+    def __sub__(self, l1, l2):
         self.result = []
         char = ''
         if l1 == '0' and l2 != '0':
-            return '-' + l2, str(self.system)
+            return '-' + l2
         if len(l1) < len(l2):
             l1, l2 = l2, l1
             char = '-'
@@ -75,17 +79,15 @@ class Calculator:
 
         r = ''.join(r)[::-1]
         if all([i=='0' for i in r]):
-            return '0', str(self.system)
+            return '0'
         elif r.startswith('0'):
-            return r.lstrip('0'), str(self.system)
+            return r.lstrip('0')
         else:
-            return r, str(self.system)
+            return r
 
 
 
-    def __mul__(self, l1, l2, system):
-        self.system = int(system)
-        self.shift = 0
+    def __mul__(self, l1, l2):
         self.result = []
         self.zero = -1
         temp = []
@@ -112,7 +114,7 @@ class Calculator:
             mul = self.__add__(temp2, mul)
             temp = []
 
-        return mul, str(self.system)
+        return mul
 
 
 
@@ -130,3 +132,19 @@ class Calculator:
                 temp = self.__sub__(temp, num2)
 
         return result.lstrip('0')
+
+def do_calc(num1, num2, system, operation):
+    calc = Calculator(num1, num2, system)
+    if operation == '+':
+        result =calc.__add__(num1,num2)
+    elif operation == '-':
+        result =calc.__sub__(num1,num2)
+    elif operation == '*':
+        result =calc.__mul__(num1,num2)
+    elif operation == '//':
+        result = num1 // num2
+    elif operation == '%':
+        result = num1 % num2
+    else:
+        raise TypeError
+    return result, str(system)
