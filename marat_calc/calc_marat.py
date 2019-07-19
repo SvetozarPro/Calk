@@ -118,36 +118,29 @@ class Calculator:
 
 
 
-    def __div__(self, num, num2):
-        result = ''
-        temp = ''
-        max_len = max(len(num), len(num2))
-        for i in range(max_len):
-            temp += num[i]
-            temp2 = int(temp) // int(num2)
-            while temp2 > self.system:
-                temp2 %= self.system
-            result += str(temp2)
-            if int(temp) >= int(num2):
-                temp = self.__sub__(temp, num2)
-
-        return result.lstrip('0')
+    # def __div__(self, num, num2):
+    #     result = ''
+    #     temp = ''
+    #     max_len = max(len(num), len(num2))
+    #     for i in range(max_len):
+    #         temp += num[i]
+    #         temp2 = int(temp) // int(num2)
+    #         while temp2 > self.system:
+    #             temp2 %= self.system
+    #         result += str(temp2)
+    #         if int(temp) >= int(num2):
+    #             temp = self.__sub__(temp, num2)
+    #
+    #     return result.lstrip('0')
 
 def do_calc(num1, num2, system, operation):
+    result = None
     calc = Calculator(num1, num2, system)
     if operation == '+':
-        result =calc.__add__(num1,num2)
+        result = calc.__add__(num1,num2)
     elif operation == '-':
-        result =calc.__sub__(num1,num2)
+        result = calc.__sub__(num1,num2)
     elif operation == '*':
-        result =calc.__mul__(num1,num2)
-    elif operation == '//':
-        result = num1 // num2
-    elif operation == '%':
-        result = num1 % num2
-    else:
-        raise TypeError
-    return result, str(system)
+        result = calc.__mul__(num1,num2)
 
-# a = do_calc('10010001100111001110','100100011001', '2', '-')
-# print(a)
+    return result, str(system)
