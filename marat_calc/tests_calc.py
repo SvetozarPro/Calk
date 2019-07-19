@@ -100,13 +100,12 @@ class CalculatorTest(unittest.TestCase):
 
     def test_floordiv(self):
         for num1, num2, system, total in test_suite_floordiv :
-            # self.assertEqual(do_calc(num1, num2, system, '*'), (total, system))
+            self.assertEqual(do_calc(num1, num2, system, '//'), (total, system))
             self.assertEqual(to_calc(num1, num2, system, '//'), (total, system))
 
 
     def test_mod(self):
         for num1, num2, system, total in test_suite_mod:
-            # self.assertEqual(do_calc(num1, num2, system, '*'), (total, system))
             self.assertEqual(to_calc(num1, num2, system, '%'), (total, system))
 
 
