@@ -1,6 +1,7 @@
 from time import perf_counter_ns
 from itertools import starmap
 from Calk_Svetozar.Svetozar_05_dict import *
+from marat_calc.calc_marat import *
 
 
 def maker(function):
@@ -27,7 +28,7 @@ test_suit = [
     for operation in operations
 ]
 
-test_functions = [to_calc]
+test_functions = [to_calc, do_calc]
 for func in test_functions:
     timer = maker(func)
     operations_times = [[list(starmap(timer, num_sys)) for num_sys in operator] for operator in test_suit]
