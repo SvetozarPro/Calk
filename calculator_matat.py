@@ -133,7 +133,7 @@ class Calculator:
     #
     #     return result.lstrip('0')
 
-def do_calc(num1, num2, system, operation):
+def calc_marat(num1, num2, system, operation):
     result = None
     calc = Calculator(num1, num2, system)
     if operation == '+':

@@ -1,6 +1,6 @@
 import unittest
-from calc_marat import *
-from Svetozar_05_dict import *
+from calculator_matat import *
+from calculator_svetozar import *
 
 
 test_suite_add = [
@@ -84,29 +84,29 @@ class CalculatorTest(unittest.TestCase):
 
     def test_add(self):
         for num1, num2, system, total in test_suite_add:
-            self.assertEqual(do_calc(num1, num2, system, '+'), (total, system))
-            self.assertEqual(to_calc(num1, num2, system, '+'), (total, system))
+            self.assertEqual(calc_marat(num1, num2, system, '+'), (total, system))
+            self.assertEqual(calc_svetozar(num1, num2, system, '+'), (total, system))
 
     def test_sub(self):
         for num1, num2, system, total in test_suite_sub:
-            self.assertEqual(do_calc(num1, num2, system, '-'), (total, system))
-            self.assertEqual(to_calc(num1, num2, system, '-'), (total, system))
+            self.assertEqual(calc_marat(num1, num2, system, '-'), (total, system))
+            self.assertEqual(calc_svetozar(num1, num2, system, '-'), (total, system))
 
     def test_mul(self):
         for num1, num2, system, total in test_suite_mul:
-            self.assertEqual(do_calc(num1, num2, system, '*'), (total, system))
-            self.assertEqual(to_calc(num1, num2, system, '*'), (total, system))
+            self.assertEqual(calc_marat(num1, num2, system, '*'), (total, system))
+            self.assertEqual(calc_svetozar(num1, num2, system, '*'), (total, system))
 
 
     def test_floordiv(self):
         for num1, num2, system, total in test_suite_floordiv :
-            self.assertEqual(do_calc(num1, num2, system, '//'), (total, system))
-            self.assertEqual(to_calc(num1, num2, system, '//'), (total, system))
+            self.assertEqual(calc_marat(num1, num2, system, '//'), (total, system))
+            self.assertEqual(calc_svetozar(num1, num2, system, '//'), (total, system))
 
 
     def test_mod(self):
         for num1, num2, system, total in test_suite_mod:
-            self.assertEqual(to_calc(num1, num2, system, '%'), (total, system))
+            self.assertEqual(calc_svetozar(num1, num2, system, '%'), (total, system))
 
 
 

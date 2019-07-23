@@ -214,7 +214,7 @@ class Num:
             raise NotationError()
 
 
-def to_calc(value1, value2, notation, operation):
+def calc_svetozar(value1, value2, notation, operation):
     """
     Функция изменения интерфейса калькулятора
     :param value1: первое число
