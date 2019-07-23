@@ -1,1 +1,5 @@
 .idea
+.DS_Store
+marat_calc/.DS_Store
+marat_calc/__pycache__
+
