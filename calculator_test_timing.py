@@ -1,7 +1,7 @@
 from time import perf_counter_ns
 from itertools import starmap
 from calculator_svetozar import *
-from calculator_matat import *
+from calculator_marat import *
 
 
 def maker(function):

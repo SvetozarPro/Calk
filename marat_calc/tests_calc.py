@@ -90,6 +90,7 @@ class CalculatorTest(unittest.TestCase):
             self.assertEqual(do_calc(num1, num2, system, '+'), (total, system))
             self.assertEqual(to_calc(num1, num2, system, '+'), (total, system))
 
+
     def test_sub(self):
         for num1, num2, system, total in test_suite_sub:
             self.assertEqual(do_calc(num1, num2, system, '-'), (total, system))

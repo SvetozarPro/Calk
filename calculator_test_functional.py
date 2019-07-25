@@ -1,7 +1,9 @@
 import unittest
-from calculator_matat import *
+import logging
+from calculator_marat import *
 from calculator_svetozar import *
 
+logging.basicConfig(filename = 'tests_result.log', level=logging.DEBUG, format="%(asctime)s:%(levelname)s:%(message)s")
 
 test_suite_add = [
     ['99', '1', '10', '100'],
@@ -55,11 +57,14 @@ test_suite_floordiv = [
     ['0', '10', '10', '0'],
     ['5', '10', '10', '0'],
     ['555', '31', '10', '17'],
-    ['F', '5', '16', '3'],
+    ['F', 'AA', '16', '0'],
     ['1110', '11', '2', '100'],
     ['7561', '11', '8', '667'],
     ['9999999999999', '15', '10', '666666666666'],
     ['15', '9999999999999', '10', '0'],
+    ['1110100111001010', '10110001', '2', '101010010'],
+    ['FFFFB9', 'CB9', '16', '141F'],
+    ['1110', '1001', '2', '1'],
     ['55', '1', '10', '55'],
     ['AFE', 'AA', '16', '10']
 ]
@@ -86,27 +91,35 @@ class CalculatorTest(unittest.TestCase):
         for num1, num2, system, total in test_suite_add:
             self.assertEqual(calc_marat(num1, num2, system, '+'), (total, system))
             self.assertEqual(calc_svetozar(num1, num2, system, '+'), (total, system))
+        logging.debug('Test_add: Passed')
+
+
 
     def test_sub(self):
         for num1, num2, system, total in test_suite_sub:
             self.assertEqual(calc_marat(num1, num2, system, '-'), (total, system))
             self.assertEqual(calc_svetozar(num1, num2, system, '-'), (total, system))
+        logging.debug('Test_sub: Passed')
+
 
     def test_mul(self):
         for num1, num2, system, total in test_suite_mul:
             self.assertEqual(calc_marat(num1, num2, system, '*'), (total, system))
             self.assertEqual(calc_svetozar(num1, num2, system, '*'), (total, system))
+        logging.debug('Test_mul: Passed')
+
 
 
     def test_floordiv(self):
         for num1, num2, system, total in test_suite_floordiv :
             self.assertEqual(calc_marat(num1, num2, system, '//'), (total, system))
             self.assertEqual(calc_svetozar(num1, num2, system, '//'), (total, system))
-
+        logging.debug('Test_floordiv: Passed')
 
     def test_mod(self):
         for num1, num2, system, total in test_suite_mod:
             self.assertEqual(calc_svetozar(num1, num2, system, '%'), (total, system))
+        logging.debug('Test_mod: Passed')
 
 
 
