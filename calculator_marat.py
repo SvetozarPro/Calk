@@ -119,37 +119,29 @@ class Calculator:
 
         return mul
 
-
     def __floordiv__(self, num, num2):
         if len(num) < len(num2):
             return '0'
         result = ''
         temp = ''
-        counter = 0
         max_len = max(len(num), len(num2))
-        if self.system == 2 or self.system == 10:
-            for i in range(max_len):
-                temp += num[i]
-                temp2 = int(temp) // int(num2)
-                while temp2 > self.system:
-                    temp2 %= self.system
-                result += str(temp2)
-                if int(temp) >= int(num2):
-                    temp = self.__sub__(temp, num2)
-            return result.lstrip('0')
-        else:
-            temp = num
-            while int(temp, self.system) >= int(num2, self.system):
-                counter += 1
+        for i in range(max_len):
+            temp += num[i]
+            temp2 = int(temp, self.system) // int(num2, self.system)
+            while temp2 > self.system:
+                temp2 %= self.system
+            if self.system == 16:
+                temp2 = str(temp2)
+                temp2 = rev_numbers.get(temp2, '0')
+            result += str(temp2)
+            if int(temp, self.system) >= int(num2, self.system):
                 temp = self.__sub__(temp, num2)
 
-        if self.system == 8:
-            oc = oct(counter)
-            return str(oc[2:])
-        if self.system == 16:
-            hx = hex(counter)
-            return str.upper(hx[2:])
-        return str(counter)
+
+        return result.lstrip('0')
+
+
+
 
 
 def calc_marat(num1, num2, system, operation):
