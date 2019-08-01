@@ -1,46 +1,41 @@
-from time import perf_counter_ns
-from itertools import starmap
+from time import perf_counter
+from random import randint
 from calculator_svetozar import *
 from calculator_marat import *
 
 
 def maker(function):
     def calc_time(value1, value2, notation, operation):
-        start = perf_counter_ns()
+        start = perf_counter()
         function(value1, value2, notation, operation)
-        end = perf_counter_ns()
+        end = perf_counter()
         return end - start
     return calc_time
 
 
-length_list = [1, 5, 10, 20, 50]  # список количества разрядов чисел для тестов
-num_sys_list = [['2', '1'], ['8', '7'], ['10', '9'], ['16', 'F']]
+def get_two_big_num():
+    first = revers_nums[randint(1, 15)]
+    second = revers_nums[randint(1, 15)]
+    for i in range(149):
+        first += revers_nums[randint(0, 15)]
+    for i in range(99):
+        second += revers_nums[randint(0, 15)]
+    return str(first), str(second)
+
+
 operations = ['+', '-', '*', '//']
-test_suit = [
-    [
-        [
-            (i, j, num_sys, operation)
-            for i in [num*k for k in length_list]
-            for j in [num*k for k in length_list]
-        ]
-        for num_sys, num in num_sys_list
-    ]
-    for operation in operations
-]
+
 
 with open("calculator_test_timing_results.tsv", "w") as file_out:
     test_functions = [calc_svetozar, calc_marat]
     for func in test_functions:
         timer = maker(func)
-        operations_times = [[list(starmap(timer, num_sys)) for num_sys in operator] for operator in test_suit]
         file_out.write("Функция\t{}\n".format(str(func.__name__)))
         for i in range(len(operations)):
             file_out.write("Операция\t{}\n".format(operations[i]))
-            for j in range(len(num_sys_list)):
-                file_out.write("Система счисления\t{}\n".format(num_sys_list[j][0]))
-                file_out.write("Количество цифр\t" + "\t".join(map(str, length_list)) + "\n")
-                for k in range(len(length_list)):
-                    file_out.write(
-                        str(length_list[k]) + "\t" +
-                        "\t".join(map(str, operations_times[i][j][k*len(length_list):(k+1)*len(length_list)])) + "\n"
-                    )
+            file_out.write("Система счисления\t16")
+            operation_time = 0.0
+            for j in range(1000):
+                operation_time += timer(*get_two_big_num(), '16', operations[i])
+            file_out.write("150 и 100 цифр 1000 раз, сек\t" + f"{operation_time:.3f}")
+            print(str(func.__name__), operations[i], f"{operation_time:.3f}")
